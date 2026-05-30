@@ -1,0 +1,584 @@
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="compilador-doc">
+<div class="inner">
+
+  <div class="hero">
+    <p class="hero-label">Compilador</p>
+    <h1>Sistemas De Programación II</h1>
+    <p>Mi Pagina Web.</p>
+    <p>Hecha por: Geraldine Flores y Narda Ponce.</p>
+  </div>
+
+  <div class="pipeline">
+    <p class="pipe-label">Código Fuente</p>
+    <div class="pipe-box">Análisis Léxico</div>
+    <div class="pipe-arrow">↓</div>
+    <div class="pipe-box highlight">Análisis Sintáctico</div>
+    <div class="pipe-arrow">↓</div>
+    <div class="pipe-box">Análisis Semántico</div>
+    <div class="pipe-arrow">↓</div>
+    <div class="pipe-box">Generación de Código Intermedio</div>
+    <div class="pipe-arrow">↓</div>
+    <div class="pipe-box">Optimización de Código</div>
+    <div class="pipe-arrow">↓</div>
+    <div class="pipe-box">Generación de Código</div>
+    <p class="pipe-end">Código de Lenguaje de Máquina</p>
+  </div>
+
+  <hr>
+
+  <!-- 1. ANÁLISIS LÉXICO -->
+  <div class="section">
+    <span class="section-number">Lexico</span>
+    <h2>Análisis Léxico</h2>
+    <p>Primera fase del compilador que convierte el código fuente en bruto en una secuencia de <strong>tokens</strong>, la unidad significativa más pequeña de un lenguaje de programación. El analizador léxico escanea el código carácter por carácter y agrupa los caracteres en tokens según las reglas del lenguaje.</p>
+    <p>Estos tokens pueden representar palabras clave, identificadores, constantes, operadores o símbolos de puntuación.</p>
+
+    <div class="callout success">
+      <p class="callout-title">Ejemplo: <code>int x = 10;</code></p>
+      <div class="token-grid">
+        <span class="token keyword">int &nbsp;— keyword</span>
+        <span class="token ident">x &nbsp;— identificador</span>
+        <span class="token op">= &nbsp;— operador</span>
+        <span class="token literal">10 &nbsp;— literal numérico</span>
+        <span class="token punct">; &nbsp;— puntuación</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. ANÁLISIS SINTÁCTICO -->
+  <div class="section">
+    <span class="section-number">Sintactico</span>
+    <h2>Análisis Sintáctico (Parsing)</h2>
+    <p>Fase que asegura que el código fuente sigue las <strong>reglas gramaticales</strong> del lenguaje de programación. Verifica que la secuencia de tokens producidos por el analizador léxico está correctamente organizada según la sintaxis del lenguaje.</p>
+    <p>Si el código no está estructurado según las reglas, el analizador genera mensajes de error apropiados.</p>
+
+    <h3>Árbol de Análisis Sintáctico (Parse Tree)</h3>
+    <p>Estructura similar a un árbol que representa la estructura sintáctica del código fuente. Muestra cómo se relacionan los tokens entre sí según las reglas gramaticales. Cada rama representa una regla de producción y las hojas representan los tokens.</p>
+
+    <h3>Árbol Sintáctico Abstracto (AST)</h3>
+    <p>Versión más abstracta del árbol de análisis. Representa la estructura jerárquica del código fuente con menos detalle, centrándose en la <strong>estructura sintáctica esencial</strong>. Es preferido en fases posteriores por ser más fácil de analizar y optimizar.</p>
+
+    <div class="callout">
+      <p class="callout-title">Papel del análisis sintáctico</p>
+      <ul>
+        <li>Toma tokens producidos por el analizador léxico como entrada</li>
+        <li>Verifica la estructura gramatical del programa</li>
+        <li>Detecta errores de sintaxis (puntos y coma faltantes, paréntesis sin cerrar…)</li>
+        <li>Construye un árbol de análisis o AST para fases posteriores</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3. ANÁLISIS SEMÁNTICO -->
+  <div class="section">
+    <span class="section-number">Semántico</span>
+    <h2>Análisis Semántico</h2>
+    <p>Garantiza que el código fuente tenga un <strong>significado lógico</strong>. Mientras el análisis sintáctico comprueba la estructura, el análisis semántico verifica el significado.</p>
+    <p>Esta fase identifica errores como desajustes de tipos, variables no declaradas y operaciones inválidas.</p>
+
+    <h3>Comprobaciones clave</h3>
+    <ul>
+      <li><strong>Comprobación de tipos:</strong> garantiza operaciones sobre tipos compatibles. Intentar sumar una cadena y un entero se marcaría como error.</li>
+      <li><strong>Declaración de variables:</strong> comprueba que las variables se declaren antes de usarse.</li>
+    </ul>
+
+    <div class="callout warning">
+      <p class="callout-title">Ejemplo de error semántico</p>
+      <pre>int a = 5;
+float b = 3.5;
+a = a + b;  // Error: no se puede asignar float a int</pre>
+    </div>
+  </div>
+
+  <!-- 4. CÓDIGO INTERMEDIO -->
+  <div class="section">
+    <span class="section-number">Intermedio</span>
+    <h2>Generación de Código Intermedio</h2>
+    <p>El código fuente se convierte en una <strong>Representación Intermedia (IR)</strong>, situada entre el código fuente de alto nivel y el código máquina final. No está hecho para ninguna máquina específica, lo que facilita la portabilidad y optimización.</p>
+    <p>Actúa como un puente entre el <em>front end</em> (fases de análisis) y el <em>back end</em> (generación de código) del compilador.</p>
+
+    <h3>Importancia</h3>
+    <ul>
+      <li><strong>Independencia de plataforma:</strong> la misma IR puede reutilizarse; solo la generación de código varía por plataforma.</li>
+      <li><strong>Eliminación de código muerto:</strong> partes que no afectan la salida.</li>
+      <li><strong>Optimización de bucles:</strong> mayor velocidad y menor uso de memoria.</li>
+      <li><strong>Eliminación de subexpresiones comunes:</strong> reutilizar valores calculados.</li>
+    </ul>
+
+    <div class="callout success">
+      <p class="callout-title">Ejemplo: <code>a = b + c * d</code></p>
+      <pre>T1 = c * d
+T2 = b + T1
+a  = T2</pre>
+    </div>
+  </div>
+
+  <!-- 5. OPTIMIZACIÓN -->
+  <div class="section">
+    <span class="section-number">Optimización</span>
+    <h2>Optimización del Código</h2>
+    <p>Proceso de mejorar el código intermedio o destino para que el programa se ejecute más rápido, use menos memoria o sea más eficiente, <strong>sin alterar su funcionalidad</strong>.</p>
+
+    <h3>Técnicas comunes</h3>
+    <ul>
+      <li><strong>Plegamiento constante:</strong> pre-cómputo de expresiones constantes.</li>
+      <li><strong>Eliminación de código muerto:</strong> eliminación de código inaccesible o no utilizado.</li>
+      <li><strong>Optimización de bucles:</strong> movimiento invariante del código o desenrollamiento.</li>
+      <li><strong>Reducción de fuerza:</strong> sustituir operaciones costosas por otras más sencillas.</li>
+    </ul>
+
+    <div class="compare">
+      <div class="compare-col">
+        <h4>Antes</h4>
+        <pre>for (int j = 0; j &lt; n; j++) {
+  x = y + z;
+  a[j] = 6 * j;
+}</pre>
+      </div>
+      <div class="compare-col right">
+        <h4>Después</h4>
+        <pre>x = y + z;
+for (int j = 0; j &lt; n; j++) {
+  a[j] = 6 * j;
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. GENERACIÓN DE CÓDIGO -->
+  <div class="section">
+    <span class="section-number">Generación de Código</span>
+    <h2>Generación de Código</h2>
+    <p>Fase final donde la representación intermedia se traduce en <strong>código máquina o ensamblador</strong>. El código objeto resultante debe tener el significado exacto del código fuente y ser eficiente en uso de CPU y gestión de memoria.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Código de 3 Direcciones</th><th>Código Ensamblador</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>T1 = c * d</code></td><td><code>LOAD R1, c</code> ; carga 'c' en R1</td></tr>
+          <tr><td></td><td><code>LOAD R2, d</code> ; carga 'd' en R2</td></tr>
+          <tr><td></td><td><code>MUL  R1, R2</code> ; R1 = c * d</td></tr>
+          <tr><td><code>T2 = b + T1</code></td><td><code>LOAD R3, b</code> ; carga 'b' en R3</td></tr>
+          <tr><td></td><td><code>ADD  R3, R1</code> ; R3 = b + (c*d)</td></tr>
+          <tr><td><code>a  = T2</code></td><td><code>STORE a, R3</code> ; guarda en 'a'</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- TABLA MANEJO DE ERRORES -->
+  <div class="section">
+    <span class="section-number">Transversal</span>
+    <h2>Manejo de Errores en cada Fase</h2>
+    <p>El manejo de errores permite al compilador detectar, informar y recuperar errores en cada fase sin detener todo el proceso de compilación.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Fase</th><th>Objetivo</th><th>Errores comunes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Análisis Léxico</strong></td>
+            <td>Detectar caracteres ilegales o mal formados</td>
+            <td>Caracteres inválidos (@, $), identificadores que inician con números</td>
+          </tr>
+          <tr>
+            <td><strong>Análisis Sintáctico</strong></td>
+            <td>Identificar fallos en la estructura gramatical</td>
+            <td>Falta de ; , paréntesis sin cerrar, estructuras de control mal escritas</td>
+          </tr>
+          <tr>
+            <td><strong>Análisis Semántico</strong></td>
+            <td>Verificar operaciones con sentido lógico</td>
+            <td>Variables no declaradas, tipos incompatibles (int + string)</td>
+          </tr>
+          <tr>
+            <td><strong>Código Intermedio</strong></td>
+            <td>Asegurar representación interna válida</td>
+            <td>División por cero con divisor constante</td>
+          </tr>
+          <tr>
+            <td><strong>Optimización</strong></td>
+            <td>Detectar anomalías en el flujo lógico</td>
+            <td>Código muerto, variables asignadas pero nunca usadas</td>
+          </tr>
+          <tr>
+            <td><strong>Generación de Código</strong></td>
+            <td>Gestionar errores de arquitectura destino</td>
+            <td>Desbordamiento de registros, instrucciones no soportadas</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ANÁLISIS SINTÁCTICO EN PROFUNDIDAD -->
+  <div class="section">
+    <span class="section-number">Detalle</span>
+    <h2>Análisis Sintáctico — En Profundidad</h2>
+
+    <h3>1. Gramáticas Libres de Contexto (CFG)</h3>
+    <p>Una CFG define las reglas sintácticas de un lenguaje mediante <strong>reglas de producción</strong> que describen cómo se forman cadenas válidas. Son suficientemente potentes para representar:</p>
+    <ul>
+      <li>Estructuras anidadas</li>
+      <li>Paréntesis equilibrados</li>
+      <li>Constructos de programación estructurada por bloques</li>
+    </ul>
+
+    <h3>2. Derivaciones</h3>
+    <p>Proceso paso a paso de aplicar reglas gramaticales para partir del símbolo inicial y producir una cadena válida de tokens. Ayuda al analizador a construir el árbol de análisis.</p>
+
+    <h3>3. Árbol de Sintaxis Concreta (CST)</h3>
+    <p>Representa la estructura gramatical <em>completa</em> del código fuente, incluyendo todos los símbolos gramaticales y la puntuación.</p>
+
+    <h3>4. Árbol de Sintaxis Abstracta (AST)</h3>
+    <p>Versión simplificada del CST que elimina detalles innecesarios y mantiene solo la estructura esencial. Preferido en fases posteriores por ser más fácil de analizar y optimizar.</p>
+
+    <h3>5. Ambigüedad</h3>
+    <p>Una gramática es <strong>ambigua</strong> cuando la misma cadena puede analizarse de más de una manera, produciendo múltiples árboles. Esto puede confundir al compilador, por lo que los lenguajes se diseñan usando gramáticas no ambiguas.</p>
+
+    <h3>Análisis descendente y ascendente</h3>
+    <div class="compare">
+      <div class="compare-col">
+        <h4>Top-Down (Descendente)</h4>
+        <p style="font-size:.88rem">Construye el árbol desde la <strong>raíz</strong> hacia las hojas. Incluye: Análisis Recursivo Descendente y Análisis LL.</p>
+      </div>
+      <div class="compare-col right">
+        <h4>Bottom-Up (Ascendente)</h4>
+        <p style="font-size:.88rem">Construye el árbol desde las <strong>hojas</strong> hacia la raíz. Incluye: Reducción-Desplazamiento y Análisis LR (LR(0), SLR, LALR, CLR).</p>
+      </div>
+    </div>
+
+    <h3>Algoritmos de Análisis Sintáctico</h3>
+    <p><strong>Descendentes:</strong></p>
+    <div class="algo-group">
+      <span class="algo-badge desc">Recursivo Descendente</span>
+      <span class="algo-badge desc">LL</span>
+    </div>
+    <p><strong>Ascendentes:</strong></p>
+    <div class="algo-group">
+      <span class="algo-badge asc">Reducción-Desplazamiento</span>
+      <span class="algo-badge asc">LR(0)</span>
+      <span class="algo-badge asc">SLR</span>
+      <span class="algo-badge asc">LALR</span>
+      <span class="algo-badge asc">CLR</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- SDT -->
+  <div class="section">
+    <span class="section-number">Avanzado</span>
+    <h2>Traducción Dirigida por Sintaxis (SDT)</h2>
+    <p>Método que integra el análisis sintáctico con <strong>reglas semánticas</strong> para producir código intermedio, código máquina o instrucciones optimizadas. Cada regla gramatical está vinculada a acciones semánticas que definen cómo debe producirse la traducción.</p>
+    <p>Estas acciones ayudan a evaluar expresiones, comprobar tipos, generar código y gestionar errores.</p>
+
+    <h3>Tipos de Atributos</h3>
+    <div class="compare">
+      <div class="compare-col">
+        <h4>Sintetizados</h4>
+        <ul>
+          <li>Se calculan usando los valores de los <strong>hijos</strong> y el propio nodo.</li>
+          <li>Evaluados en recorrido <strong>bottom-up</strong>.</li>
+          <li>Pueden asociarse a terminales y no terminales.</li>
+          <li>Usados en SDT de tipo S y L.</li>
+        </ul>
+      </div>
+      <div class="compare-col right">
+        <h4>Heredados</h4>
+        <ul>
+          <li>Se calculan usando valores del <strong>padre, hermanos</strong> y el nodo.</li>
+          <li>Evaluados en recorrido <strong>top-down / lateral</strong>.</li>
+          <li>Solo se asocian a no terminales.</li>
+          <li>Usados solo en SDT de tipo L.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Ejemplo Práctico: <code>S = 2 + 3 * 4</code></h3>
+    <div class="example-box">
+      <p class="ex-label">Evaluación bottom-up (de hojas a raíz)</p>
+      <ol class="steps-list">
+        <li><code>F → 2</code> &nbsp;→&nbsp; <strong>F.val = 2</strong></li>
+        <li><code>F → 3</code> &nbsp;→&nbsp; <strong>F.val = 3</strong></li>
+        <li><code>F → 4</code> &nbsp;→&nbsp; <strong>F.val = 4</strong></li>
+        <li><code>T → F</code> &nbsp;→&nbsp; <strong>T.val = 3</strong></li>
+        <li><code>T → T * F</code> &nbsp;→&nbsp; <strong>T.val = 3 × 4 = 12</strong></li>
+        <li><code>E → T</code> &nbsp;→&nbsp; <strong>E.val = 12</strong></li>
+        <li><code>E → E + T</code> &nbsp;→&nbsp; <strong>E.val = 2 + 12 = <span style="color:var(--accent)">14</span></strong></li>
+      </ol>
+    </div>
+
+    <h3>Ventajas y Limitaciones</h3>
+    <div class="pros-cons">
+      <div class="pros">
+        <h4>✓ Ventajas</h4>
+        <ul>
+          <li>Sencillo de diseñar e implementar</li>
+          <li>Estructura modular clara</li>
+          <li>Traducción eficiente con soporte de optimizaciones básicas</li>
+        </ul>
+      </div>
+      <div class="cons">
+        <h4>✗ Limitaciones</h4>
+        <ul>
+          <li>Capacidad limitada de traducción</li>
+          <li>No adecuado para traducciones complejas</li>
+          <li>Manejo de errores débil</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+    <!-- TABLA DE SÍMBOLOS -->
+  <div class="section">
+    <span class="section-number">Auxiliar</span>
+    <h2>Tabla de Símbolos</h2>
+    <p>Estructura de datos utilizada y mantenida por el compilador que contiene todos los nombres de identificadores junto con sus tipos. Permite al compilador encontrar identificadores rápidamente durante el proceso de compilación.</p>
+    <p>Durante el análisis sintáctico, información sobre identificadores —como nombres y ámbitos— se registra y actualiza en la tabla de símbolos para su uso en fases posteriores.</p>
+  </div>
+
+</div><!-- /.inner -->
+</div><!-- /.compilador-doc -->
+<div class="guia-doc">
+<div class="inner">
+
+
+  <!-- 1. CONCEPTOS BÁSICOS -->
+  <div class="section">
+    <span class="section-number">Tema 01</span>
+    <h2>Conceptos Básicos</h2>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <p class="c-label">Componente léxico</p>
+        <h4>Token</h4>
+        <p>Elemento léxico del lenguaje. Símbolo No Terminal de las fases siguientes. Representa la unidad mínima con significado en el código fuente.</p>
+      </div>
+      <div class="concept-card">
+        <p class="c-label">Expresión regular</p>
+        <h4>Patrón</h4>
+        <p>Expresión regular que define el lenguaje. Forma general: <code>Letra (Letra | Dígito)*</code>. Describe el conjunto de lexemas que puede tomar un token.</p>
+      </div>
+      <div class="concept-card">
+        <p class="c-label">Cadena de caracteres</p>
+        <h4>Lexema</h4>
+        <p>Cadena de caracteres correspondiente al componente léxico. Es la representación concreta (texto real) del token en el código fuente.</p>
+      </div>
+      <div class="concept-card">
+        <p class="c-label">Metadatos</p>
+        <h4>Atributos de un Componente</h4>
+        <p>Información del componente necesaria en etapas posteriores del análisis: valor de la constante, nombre de una variable, etc.</p>
+      </div>
+    </div>
+
+    <div class="callout ok">
+      <p class="callout-title">Categoría Léxica</p>
+      <p style="margin-bottom:0">Tipo de símbolo elemental del lenguaje fuente. Ejemplos: identificadores, palabras clave, constantes numéricas, operadores, etc. El <strong>token</strong> es el elemento perteneciente a una categoría léxica.</p>
+    </div>
+
+    <h3>Diferencia entre Intérprete y Compilador</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Característica</th><th>Compilador</th><th>Intérprete</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Proceso</strong></td>
+            <td>Traduce todo el código fuente a código máquina antes de ejecutar</td>
+            <td>Traduce y ejecuta línea por línea en tiempo real</td>
+          </tr>
+          <tr>
+            <td><strong>Velocidad</strong></td>
+            <td>Ejecución más rápida (ya compilado)</td>
+            <td>Más lento (traducción en tiempo de ejecución)</td>
+          </tr>
+          <tr>
+            <td><strong>Errores</strong></td>
+            <td>Todos los errores se reportan antes de ejecutar</td>
+            <td>Se detiene al encontrar el primer error</td>
+          </tr>
+          <tr>
+            <td><strong>Salida</strong></td>
+            <td>Genera un programa objeto independiente</td>
+            <td>No genera archivo objeto; ejecuta directamente</td>
+          </tr>
+          <tr>
+            <td><strong>Ejemplo</strong></td>
+            <td>C, C++, Java (bytecode)</td>
+            <td>Python, Ruby, JavaScript (intérprete puro)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 2. ANÁLISIS LÉXICO -->
+  <div class="section">
+    <span class="section-number">Tema 02</span>
+    <h2>Análisis Léxico (Scanner)</h2>
+
+    <p>El análisis léxico-sintáctico tiene por objeto reconocer la forma de las sentencias de un lenguaje. Reconocer la forma de una sentencia implica reconocer sus lexemas y estructuras sintácticas. El resultado puede ser un error de reconocimiento o un árbol de sintaxis abstracta (ASA).</p>
+
+    <h3>Flujo: Sentencia → Léxico → Sintáctico → ASA</h3>
+    <div class="flow-row">
+      <div class="flow-col">
+        <div class="flow-box input">Sentencia<br><small>(texto)</small></div>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-col">
+        <div class="flow-box lexico">Filtro 1.1<br>Analizador Léxico</div>
+        <div class="flow-label">lexemas</div>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-col">
+        <div class="flow-box sintac">Filtro 1.2<br>Analizador Sintáctico</div>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-col">
+        <div class="flow-box output">Sentencia<br><small>(ASA)</small></div>
+      </div>
+    </div>
+
+    <h3>Función del Analizador Léxico</h3>
+    <div class="callout ok">
+      <p class="callout-title">Función principal</p>
+      <p style="margin-bottom:0">El analizador léxico es la <strong>primera fase de un compilador</strong>. Su función principal consiste en leer los caracteres de entrada y elaborar como salida una secuencia de componentes léxicos que utiliza el analizador sintáctico para hacer el análisis.</p>
+    </div>
+    <p>Lee la secuencia de caracteres de izquierda a derecha del programa fuente y agrupa la secuencia de caracteres en unidades con significado propio (componentes léxicos o tokens). Las palabras clave, identificadores, operadores, constantes numéricas, signos de puntuación como separadores de sentencia, llaves, paréntesis, etcétera, son diversas clasificaciones de componentes léxicos.</p>
+
+    <h3>Razones para separar el Análisis Léxico del Sintáctico</h3>
+    <div class="reason-list">
+      <div class="reason-card">
+        <div class="reason-num">1</div>
+        <p><strong>Diseño más sencillo.</strong> Separar el análisis léxico del análisis sintáctico a menudo permite simplificar una u otra de dichas fases, resultando en un diseño general más modular y mantenible.</p>
+      </div>
+      <div class="reason-card">
+        <div class="reason-num">2</div>
+        <p><strong>Mayor eficiencia del compilador.</strong> Un analizador léxico independiente permite construir un procesador especializado y potencialmente más eficiente. Con técnicas especializadas de manejo de buffer para la lectura de caracteres y procesamiento de componentes léxicos se puede mejorar significativamente el rendimiento.</p>
+      </div>
+      <div class="reason-card">
+        <div class="reason-num">3</div>
+        <p><strong>Mejor transportabilidad.</strong> Las peculiaridades del alfabeto de entrada y otras anomalías propias de los dispositivos pueden limitarse al analizador léxico, facilitando la portabilidad del compilador.</p>
+      </div>
+    </div>
+
+    <h3>Análisis Léxico — Scanner</h3>
+    <p>Scanner tiene las funciones de leer el programa fuente como un archivo de caracteres y dividirlo en tokens. Los tokens son las palabras reservadas de un lenguaje, secuencia de caracteres que representa una unidad de información en el programa fuente.</p>
+    <p>En cada caso un token representa un cierto patrón de caracteres que el analizador léxico reconoce desde el inicio de los caracteres de entrada. Es necesario generar un mecanismo computacional que permita identificar el patrón de transición entre los caracteres de entrada, generando tokens que posteriormente serán clasificados. Este mecanismo es posible crearlo a partir de un tipo específico de máquina de estados llamado <strong>autómata finito</strong>.</p>
+    <div class="callout">
+      <p class="callout-title">Para reconocer</p>
+      <p style="margin-bottom:0">Los <strong>lexemas</strong> de un lenguaje se reconocen usando <strong>expresiones regulares</strong>; para reconocer estructuras sintácticas se usan <strong>gramáticas independientes de contexto</strong>.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 3. ANÁLISIS SINTÁCTICO -->
+  <div class="section">
+    <span class="section-number">Tema 03</span>
+    <h2>Análisis Sintáctico</h2>
+
+    <p>Determina si la secuencia de componentes léxicos sigue la sintaxis del lenguaje y obtiene la <strong>estructura jerárquica del programa en forma de árbol</strong>, donde los nodos son las construcciones de alto nivel del lenguaje.</p>
+    <p>Se determinan las relaciones estructurales entre los componentes léxicos, algo semejante a realizar el análisis gramatical en el lenguaje natural. La estructura sintáctica se define mediante las gramáticas independientes del contexto.</p>
+
+    <h3>¿Qué es el Analizador Sintáctico?</h3>
+    <p>Es la fase del analizador que se encarga de chequear el texto de entrada en base a una gramática dada. Si el programa de entrada es válido, suministra el árbol sintáctico que lo reconoce. En la práctica, el analizador sintáctico también realiza:</p>
+
+    <div class="func-grid">
+      <div class="func-item">Acceder a la tabla de símbolos</div>
+      <div class="func-item">Chequeo de tipos (análisis semántico)</div>
+      <div class="func-item">Generar código intermedio</div>
+      <div class="func-item">Generar errores cuando se producen</div>
+    </div>
+
+    <div class="callout">
+      <p class="callout-title">Diagrama: Léxico → Sintáctico</p>
+      <div class="flow-row" style="margin:0">
+        <div class="flow-col">
+          <div class="flow-box input" style="min-width:90px;font-size:.78rem">Secuencia<br>caracteres</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-col">
+          <div class="flow-box lexico" style="min-width:90px;font-size:.78rem">LÉXICO</div>
+          <div class="flow-label">Secuencia de Terminales</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-col">
+          <div class="flow-box sintac" style="min-width:90px;font-size:.78rem">SINTÁCTICO</div>
+          <div class="flow-label">Usa gramática (N,T,P,S)</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-col">
+          <div class="flow-box output" style="min-width:90px;font-size:.78rem">Árbol<br>Sintáctico</div>
+        </div>
+      </div>
+    </div>
+
+    <p>En definitiva, el analizador sintáctico realiza casi todas las operaciones de la compilación. Este método de trabajo da lugar a los <strong>métodos de compilación dirigidos por sintaxis</strong>.</p>
+  </div>
+
+  <hr>
+
+  <!-- 4. ANÁLISIS SEMÁNTICO -->
+  <div class="section">
+    <span class="section-number">Tema 04</span>
+    <h2>Análisis Semántico</h2>
+
+    <p>El análisis semántico <strong>dota de significado coherente</strong> a lo construido en el análisis sintáctico. El chequeo semántico se encarga de que los tipos que intervienen en las expresiones sean compatibles o que los parámetros reales de una función sean coherentes con los parámetros formales.</p>
+
+    <h3>Funciones Principales</h3>
+    <div class="func-grid">
+      <div class="func-item">Identificar cada tipo de instrucción</div>
+      <div class="func-item">Completar la Tabla de Símbolos</div>
+      <div class="func-item">Comprobaciones de tipos</div>
+      <div class="func-item">Comprobaciones del flujo de control</div>
+      <div class="func-item">Comprobaciones de unicidad</div>
+      <div class="func-item">Comprobaciones de emparejamiento</div>
+    </div>
+
+    <p>La tarea del compilador requiere la extracción del contenido semántico incluido en las distintas sentencias del programa. Es necesario dotar al compilador de rutinas auxiliares que permitan captar todo aquello que no se ha expresado mediante la sintaxis del lenguaje.</p>
+
+    <div class="callout warn">
+      <p class="callout-title">Verificación de Tipos</p>
+      <p style="margin-bottom:0">Un componente importante del análisis semántico es la <strong>Verificación de Tipos</strong>. El compilador verifica si cada operador tiene operandos permitidos por la especificación del lenguaje fuente. La fase de análisis semántico revisa el programa fuente para encontrar errores semánticos y reúne la información sobre los tipos para la fase posterior de generación de código.</p>
+    </div>
+
+    <p>El análisis semántico completa las dos fases anteriores (lexicográfico y sintáctico) incorporando ciertas comprobaciones que no pueden asimilarse al mero reconocimiento de una cadena dentro de un lenguaje.</p>
+  </div>
+
+  <hr>
+
+    <div class="callout ok">
+      <p class="callout-title">Componentes auxiliares del compilador</p>
+      <ul style="margin-bottom:0">
+        <li><strong>Tabla de Símbolos:</strong> utilizada por todas las fases del compilador para almacenar y consultar información sobre identificadores.</li>
+        <li><strong>Manejador de Errores:</strong> detecta, reporta y se recupera de errores en cada fase sin detener todo el proceso de compilación.</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr>
+
+
+</div><!-- /.inner -->
+</div><!-- /.guia-doc -->
