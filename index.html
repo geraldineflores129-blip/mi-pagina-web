@@ -12,7 +12,7 @@
     <p class="hero-label">Compilador</p>
     <h1>Sistemas De Programación II</h1>
     <p>Mi Pagina Web.</p>
-    <p>Hecha por: Geraldine Flores.</p>
+    <p>Hecha por: Geraldine Flores y Narda Ponce.</p>
   </div>
 
   <div class="pipeline">
@@ -578,7 +578,214 @@ for (int j = 0; j &lt; n; j++) {
   </div>
 
   <hr>
+<!-- REPRESENTACIÓN DE OPERACIONES Y GENERACIÓN DE CÓDIGO -->
+<div class="section">
+  <span class="section-number">Tema 05</span>
+  <h2>Representación de Operaciones y Generación de Código</h2>
 
+  <p>
+    La representación de operaciones dentro de un compilador consiste en modelar
+    las expresiones y cálculos del programa mediante estructuras internas que
+    permitan analizarlas, optimizarlas y posteriormente traducirlas a código máquina.
+  </p>
+
+  <h3>Representación de Operaciones</h3>
+
+  <div class="concept-grid">
+
+    <div class="concept-card">
+      <h4>Operación</h4>
+      <p>
+        Es una acción que transforma uno o más operandos mediante un operador.
+      </p>
+    </div>
+
+    <div class="concept-card">
+      <h4>Operandos y Operadores</h4>
+      <p>
+        Los operandos representan los datos y los operadores indican la acción
+        que debe realizarse sobre ellos.
+      </p>
+    </div>
+
+    <div class="concept-card">
+      <h4>Operaciones Simples</h4>
+      <p>
+        Contienen un único operador, por ejemplo:
+        <code>a + b</code>.
+      </p>
+    </div>
+
+    <div class="concept-card">
+      <h4>Operaciones Compuestas</h4>
+      <p>
+        Combinan varias operaciones en una misma expresión,
+        como <code>a + b * c</code>.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="callout ok">
+    <p class="callout-title">Importancia</p>
+    <p>
+      Una representación correcta permite optimizar expresiones,
+      eliminar cálculos redundantes y generar código más eficiente.
+    </p>
+  </div>
+
+  <h3>Flujo de Datos y Flujo de Control</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Concepto</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Flujo de Datos</strong></td>
+          <td>Describe cómo los datos se mueven y transforman dentro del programa.</td>
+        </tr>
+        <tr>
+          <td><strong>Flujo de Control</strong></td>
+          <td>Describe el orden en que se ejecutan las instrucciones.</td>
+        </tr>
+        <tr>
+          <td><strong>Condicionales</strong></td>
+          <td>Introducen bifurcaciones y caminos alternativos de ejecución.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Representaciones Intermedias</h3>
+
+  <p>
+    Una representación intermedia (IR) es una forma de código independiente de la
+    arquitectura utilizada entre el análisis y la generación de código final.
+  </p>
+
+  <div class="callout">
+    <p class="callout-title">Características</p>
+    <ul>
+      <li>Independiente de la máquina.</li>
+      <li>Fácil de optimizar.</li>
+      <li>Facilita la portabilidad.</li>
+      <li>Representa claramente las operaciones.</li>
+    </ul>
+  </div>
+
+  <h3>Código de Tres Direcciones</h3>
+
+  <pre>
+t1 = b * c
+t2 = a + t1
+x = t2
+  </pre>
+
+  <p>
+    El código de tres direcciones divide expresiones complejas en operaciones
+    simples usando variables temporales.
+  </p>
+
+  <h3>Árboles Sintácticos como Representación Intermedia</h3>
+
+  <p>
+    Los árboles sintácticos muestran la jerarquía de las operaciones y permiten
+    representar la precedencia de operadores de forma natural.
+  </p>
+
+
+  <h3>Variables Temporales</h3>
+
+  <p>
+    Son variables creadas por el compilador para almacenar resultados
+    intermedios durante la evaluación de expresiones.
+  </p>
+
+  <pre>
+t1 = b * c
+t2 = a + t1
+resultado = t2
+  </pre>
+
+  <h3>Generación de Código Final</h3>
+
+  <p>
+    La generación de código final traduce la representación intermedia a código
+    máquina o ensamblador específico de la arquitectura destino.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Código Intermedio</th>
+          <th>Código Ensamblador</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>t1 = b * c</td>
+          <td>LOAD R1, b<br>LOAD R2, c<br>MUL R1, R2</td>
+        </tr>
+        <tr>
+          <td>t2 = a + t1</td>
+          <td>LOAD R3, a<br>ADD R3, R1</td>
+        </tr>
+        <tr>
+          <td>resultado = t2</td>
+          <td>STORE resultado, R3</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Algoritmo de Sethi-Ullman</h3>
+
+  <p>
+    El algoritmo de Sethi-Ullman determina el orden óptimo para evaluar
+    expresiones y minimizar el número de registros necesarios durante la
+    generación de código.
+  </p>
+
+  <div class="callout ok">
+    <p class="callout-title">Ventaja</p>
+    <p>
+      Reduce accesos innecesarios a memoria y mejora el uso de registros.
+    </p>
+  </div>
+
+  <h3>Pila de Ejecución</h3>
+
+  <p>
+    La pila almacena parámetros, variables locales y direcciones de retorno
+    durante las llamadas a funciones.
+  </p>
+
+  <h3>Optimización del Código Objeto</h3>
+
+  <ul>
+    <li>Eliminación de código muerto.</li>
+    <li>Plegamiento de constantes.</li>
+    <li>Propagación de copias.</li>
+    <li>Optimización Peephole.</li>
+    <li>Simplificaciones algebraicas.</li>
+  </ul>
+
+  <div class="callout ok">
+    <p class="callout-title">Ejemplos de simplificación algebraica</p>
+    <pre>
+x + 0 = x
+x * 1 = x
+x * 0 = 0
+    </pre>
+  </div>
+
+</div>
 
 </div><!-- /.inner -->
 </div><!-- /.guia-doc -->
